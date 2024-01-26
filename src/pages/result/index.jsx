@@ -45,7 +45,7 @@ function Result() {
   //     path: `/pages/index/index`,
   //   };
   // })
-
+ 
   // 保存图片
   const saveImg = () => {
     if (saveDisable) {
