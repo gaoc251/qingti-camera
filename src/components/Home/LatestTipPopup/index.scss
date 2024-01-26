@@ -1,0 +1,35 @@
+.latest-tip-popup {
+    width: 296px;
+    height: 290px;
+    background: linear-gradient(180deg, #FFF8BC 0%, #FFF 65.45%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &-tip {
+        width: 153px;
+        color: #2E3131;
+        text-align: center;
+        font-family: 江城圆体;
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 25px;
+    }
+    &-img {
+        width: 81px;
+        height: 70px;
+        margin: 20px 0;
+    }
+    &-btn {
+        width: 150px;
+        height: 70px;
+        background: #FFF9BF;
+        border-radius: 35px;
+        line-height: 70px;
+        text-align: center;
+        color: #5B544A;
+        font-family: 江城圆体;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}

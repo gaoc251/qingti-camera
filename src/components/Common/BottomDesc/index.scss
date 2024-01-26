@@ -1,0 +1,23 @@
+.bottom-desc {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0 200px;
+    &-logo {
+      width: 30px;
+      height: 30px;
+    }
+    &-title {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 25px;
+      color: rgba(227, 227, 227, 1);
+    }
+    &-tip {
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 18px;
+      color: rgba(219, 219, 219, 1);
+    }
+}

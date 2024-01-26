@@ -1,0 +1,39 @@
+.ad-process-popup {
+    height: 540px;
+    width: 335px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    &-video {
+        height: 460px;
+        width: 335px;
+    }
+    &-process {
+        width: 300px;
+        margin: 25px auto 0;
+    }
+    &-tip {
+        margin-top: 10px;
+        color: #2E3131;
+        text-align: center;
+        font-family: 江城圆体;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 21px;
+    }
+    &-countDown {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+        background: rgba(255, 0, 0, 0.50);
+        width: 63px;
+        height: 24px;
+        color: #FFF;
+        text-align: center;
+        font-family: 江城圆体;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+    }
+}
