@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import classNames from 'classnames';
 import './index.scss'
 import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { Request } from '../../utils/request';
-import { getImg, img2img } from '../../utils/api';
+import { getImg, img2img, getUselimite, getTaskStatus } from '../../utils/api';
 
 import { Loading } from '@nutui/nutui-react-taro';
 import UploaderPopup from '../../components/Common/UploaderPopup';
@@ -28,15 +28,38 @@ function Result() {
   const [openId, setOpenId] = useState('')
   const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
   const [residueTimes, setResidueTimes] = useState(0) // 剩余次数
+  const [isReuse, setIsReuse] = useState(false); // 是否是重新绘制
   let taskId = getCurrentInstance().router.params.id // 任务ID
   let openLunxun = true; // 默认开启轮训操作
+  let timer = null 
+
+  const fetchTaskStatus = useCallback( async()=>{
+    console.log("lunxun")
+    await Request('get', getTaskStatus, {openid: openId, taskid: taskId}).then(res => {
+      let _status = res.data.status
+      if (_status == 'running') {
+        clearInterval(timer)
+        getImgData()
+      } else if (_status == 'failed') {
+        clearInterval(timer)
+        Taro.showToast({
+          url: '生成失败',
+          icon: 'none'
+        })
+      }
+    })
+  }, [])
  
   useEffect(() => {
     let _openId = Taro.getStorageSync('openId')
     setOpenId(_openId)
   }, [])
 
-  // TODO: 数据轮询 5S一次
+  useEffect(() => {
+    if (openLunxun && openId) {
+      timer = setInterval(fetchTaskStatus, 5000)
+    }
+  }, [openId, taskId])
 
   // useShareAppMessage(()=>{
   //   return {
@@ -130,16 +153,18 @@ function Result() {
 
   const getImgData = () => {
     Request('get', getImg, { openid:openId, taskid: taskId }).then(res => {
-      const { infoCode, pics } = res
+      const { infoCode, data } = res
       if (infoCode == '10000') {
         setImgInfo({
           avatar: '',
           themeName: '',
           type: '',
-          pics: pics
+          pics: data.pics
         })
         setSaveDisable(false)
         setIsVisibleAdProcess(false)
+        openLunxun=false
+        clearInterval(timer)
       } else if (infoCode == 10001) {
         setSaveDisable(true)
       } else if (infoCode == 30000) {
@@ -160,6 +185,7 @@ function Result() {
   const againDraw = () => {
     if (residueTimes) {
       setIsResidueTimesVisible(true)
+      return false
     }
     if (saveDisable) {
       Taro.showToast({
@@ -167,9 +193,10 @@ function Result() {
         icon: 'none'
       })
     } else {
+      setIsReuse(true)
       setIsVisibleAdProcess(true)
       // 重新绘制调用图生图接口
-      Request('get', img2img, {openid: openId, reuse: true, type: imgInfo.type}).then(res => {
+      Request('post', img2img, {openid: openId, reuse: true, type: imgInfo.type}).then(res => {
         taskId = res.data.taskid
       })
     }
@@ -235,7 +262,7 @@ function Result() {
       
       <UploaderPopup isVisible={isVisible} onClose={()=>{handleAgainBtn(false)}} />
 
-      <AdProcessPopup isVisible={isVisiblAdProcess} onClose={()=>{closeAdProcess(false)}} source={source} />
+      <AdProcessPopup isVisible={isVisiblAdProcess} onClose={()=>{closeAdProcess(false)}} source={source} isReuse={isReuse} />
 
       {isResidueTimesVisible &&<NoneCountPopup isVisible={isResidueTimesVisible} onclose={()=>{
         handleNoneCountBtn(false)

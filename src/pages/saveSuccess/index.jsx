@@ -1,14 +1,38 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
 import { useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import BottomDesc from '../../components/Common/BottomDesc'
 import UploaderPopup from '../../components/Common/UploaderPopup'
+import NoneCountPopup from '../../components/Common/NoneCountPopup'
+
+import { Request } from '../../utils/request'
+import {  getUselimite } from '../../utils/api';
 
 function SaveSuccess() {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleTip, setIsVisiblTip] = useState(false); // 分享朋友圈提示
+  const [residueTimes, setResidueTimes] = useState(0) // 剩余次数
+  const [openId, setOpenId] = useState('')
+  const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
+
+  useEffect(() => {
+    let _openId = Taro.getStorageSync('openId')
+    setOpenId(_openId)
+  }, [])
+
+
+  useEffect(()=>{
+    openId && fetchResidueTimes()
+  }, [openId])
+
+  // 获取 剩余次数
+  const fetchResidueTimes = () => {
+    Request('get', getUselimite, {openid:openId}).then(res=>{
+      setResidueTimes(res.data.limite)
+    })
+  }
 
   const res = {
     imgUrl: '../../public/saveSuccess/result.png',
@@ -41,6 +65,10 @@ function SaveSuccess() {
   }
 
   const handleChangeBtn = (flag) => {
+    if (residueTimes) {
+      setIsResidueTimesVisible(true)
+      return false
+    }
     setIsVisible(flag)
   }
 
@@ -49,6 +77,11 @@ function SaveSuccess() {
     setIsVisiblTip(flag)
   }
   
+  // 关闭剩余次数
+  const handleNoneCountBtn = (flag) => {
+    setIsResidueTimesVisible(flag)
+  }
+
   return (
     <View className="save-success">
       <View className='save-success-top'>
@@ -91,6 +124,11 @@ function SaveSuccess() {
       <UploaderPopup isVisible={isVisible} onClose={()=>{handleChangeBtn(false)}} />
 
       {isVisibleTip && <Image className='save-success-sharetip' src='../../public/saveSuccess/tip.png' onClick={()=>{openPenyouquan(false)}} />}
+
+      {isResidueTimesVisible &&<NoneCountPopup isVisible={isResidueTimesVisible} onclose={()=>{
+        handleNoneCountBtn(false)
+      }} />}
+
     </View>
   )
 }

@@ -7,7 +7,7 @@ import './index.scss'
 
 
 export default function AdProcessPopup(props) {
-  const {isVisible, onClose, source} = props
+  const {isVisible, onClose, source, isReuse} = props
 
   const [seconds, setSeconds] = useState(0);
   const [percent, setPercent] = useState(30)
@@ -28,6 +28,10 @@ export default function AdProcessPopup(props) {
   useEffect(()=>{
     setSeconds(40)
   },[])
+
+  useEffect(()=> {
+    setSeconds(40)
+  }, [isReuse])
 
   useInterval(
     () => {
