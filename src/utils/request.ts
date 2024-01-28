@@ -11,7 +11,7 @@ export async function Request(method, url, params = {}, header = {}) {
             header: Object.assign(header, {'Content-type': 'application/json'}),
             success: (result) => {
                 const res = result.data
-                if (res?.infoCode == 10000) {
+                if (res?.infoCode == 10000 || res?.infoCode == 10001) {
                     // return res.data
                     resolve(res)
                 } else {

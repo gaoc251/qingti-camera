@@ -17,7 +17,7 @@ function HomeTabs(props) {
 
   const [loading, setLoading] = useState(false)
   // const [tabData, setTabData] = useState([])
-  const { onChange } = props
+  const { onChange, navBarHeight } = props
 
   const [typeList, setTypeList] = useState([]); // 风格title
   const [typeContent, setTypeContent] = useState([]); // 风格title
@@ -221,10 +221,11 @@ function HomeTabs(props) {
         onChange={(value) => {
           changeTab(value)
         }}
-        tabStyle={{ position: 'sticky', top: '86px', zIndex: 11, padding: '0 10px'}}
+        tabStyle={{ position: 'sticky', top: navBarHeight + 'px', zIndex: 11, padding: '0 10px'}}
         className='home-tabs-wrap'
       >
         {typeList && typeList.length && typeList.map((item,index) => <Tabs.TabPane title={item.name}>
+        
           { loading && rightShowList.length == 0 && leftShowList.length == 0 && <Loading className='home-tabs-loading' direction="vertical" icon={<Image className='home-tabs-loading-img' src='../../public/result/loading.png' />}>加载中</Loading>}
           {typeContent.length == 0 && <Empty />}
           {typeContent.length > 0 && <View className='home-tabs-list'>

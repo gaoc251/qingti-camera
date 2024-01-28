@@ -5,7 +5,7 @@ import { View, Text, Image } from '@tarojs/components'
 
 import './index.scss'
 
-function getSystemInfo() {
+export function getSystemInfo() {
 if (Taro.globalSystemInfo && !Taro.globalSystemInfo.ios) {
     return Taro.globalSystemInfo;
   } else {

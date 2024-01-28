@@ -12,6 +12,8 @@ import UploaderPopup from '../../components/Common/UploaderPopup'
 import LatestTipPopup from '../../components/Home/LatestTipPopup'
 import NoneCountPopup from '../../components/Common/NoneCountPopup'
 
+import { getSystemInfo } from '../../components/Common/NavBar'
+
 function Index() {
   const [isVisible, setIsVisible] = useState(false)
   const [isLatestVisible, setIsLatestVisible] = useState(false)
@@ -22,6 +24,7 @@ function Index() {
   const [isNewUser, setIsNewUser] = useState(true); // 首次登陆判断 
   const [checkStatuse, setCheckStatuse] = useState(false) // 用户是否查看过新生成的作品
   const [taskid, setTaskid] = useState(0) // 记录作品任务ID
+  const [navBarHeight, setNavBarHeight] = useState(60); // 自定义导航高度
 
   useEffect(() => {
     let _openId = Taro.getStorageSync('openId')
@@ -89,6 +92,40 @@ function Index() {
   const handleNoneCountBtn = (flag) => {
     setIsResidueTimesVisible(flag)
   }
+
+
+  useEffect(() => {
+    let systemInfo = getSystemInfo()
+    setNavBarHeight(systemInfo.navBarHeight+systemInfo.navBarExtendHeight)
+  }, [])
+
+  // // 自定义导航栏的高度：
+  // useEffect(() => {
+  //   let menuButtonObject = Taro.getMenuButtonBoundingClientRect();
+  //   Taro.getSystemInfo({
+  //     success: (res) => {
+  //       //导航高度
+  //       // let statusBarHeight = res.statusBarHeight,
+  //       //   navHeight =
+  //       //     statusBarHeight +
+  //       //     menuButtonObject.height +
+  //       //     (menuButtonObject.top - statusBarHeight) * 2,
+  //       //   munuButtonTotalHeight =
+  //       //     menuButtonObject.height +
+  //       //     (menuButtonObject.top - statusBarHeight) * 2;
+  //       debugger
+  //       // setNavHeight(navHeight);
+  //       // setStatusBarHeight(statusBarHeight);
+  //       // setMunuButtonTotalHeight(munuButtonTotalHeight);
+
+  //       console.log("111", menuButtonObject.bottom + (menuButtonObject.top - res.statusBarHeight))
+  //     },
+  //     fail(err) {
+  //       console.log(err);
+  //     },
+  //   });
+  // });
+
   return (
     <View className="index">
       <NavBar
@@ -102,17 +139,20 @@ function Index() {
         }
       />
       <View className='index-top'>
-        <View className='index-top-title'>上传一张照片</View>
-        <View className='index-top-title'>用AI生成全新专属风格！</View>
-        <Text className='index-top-tip'>由AI生成，内容仅供娱乐参考</Text>
-        <Image className='index-top-none' src='../../public/home/bg.png' />
-        { isNewUser || !checkStatuse && <Image className='index-top-latest' 
-        // src='../../public/home/latestTip_new.png' 
-        src={checkStatuse?'../../public/home/latestTip.png':'../../public/home/latestTip_new.png'}
-        onClick={()=>{setIsLatestVisible(true)}}/>}
+        <View className='index-top-content'>
+          <View >
+            <View className='index-top-title'>上传一张照片</View>
+            <View className='index-top-title'>用AI生成全新专属风格！</View>
+            <Text className='index-top-tip'>由AI生成，内容仅供娱乐参考</Text>
+          </View>
+          { !isNewUser && !checkStatuse && <Image className='index-top-latest' 
+            src={checkStatuse?'../../public/home/latestTip.png':'../../public/home/latestTip_new.png'}
+            onClick={()=>{setIsLatestVisible(true)}}/>}
+        </View>
+        <Image className='index-top-none' src='../../public/home/bg.png' style={{top: navBarHeight + 'px'}}/>
       </View>
 
-      <Tab onChange={changeThemeIndex}/>
+      <Tab onChange={changeThemeIndex} navBarHeight={navBarHeight} />
 
       <View className='index-experience'>
         <View className='index-experience-btn' onClick={()=>{handleExperienceBtn(true)}}>

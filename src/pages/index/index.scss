@@ -38,9 +38,15 @@
     &-latest {
       height: 43px;
       width: 50px;
-      position: absolute;
-      top: 160px;
-      right: 14px;
+      // position: absolute;
+      // top: 160px;
+      // right: 14px;
+    }
+    &-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
     }
   }
   &-experience {

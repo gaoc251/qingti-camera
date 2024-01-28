@@ -1,4 +1,4 @@
-$lineGradient1: linear-gradient(90deg, #fbfbfb, #ffffff66);
+$lineGradient1: linear-gradient(90deg, #fbfbfb, #ffffff30);
 
 .home-tabs {
     &-title {
@@ -12,7 +12,7 @@ $lineGradient1: linear-gradient(90deg, #fbfbfb, #ffffff66);
         flex-wrap: wrap;
         justify-content: flex-start;
         padding: 5px 10px;
-        background: transparent;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.00) 100%);
 
         &-left, &-right {
             width: calc(50% - 5px);
@@ -70,7 +70,7 @@ $lineGradient1: linear-gradient(90deg, #fbfbfb, #ffffff66);
     }
     .nut-tabpane {
         padding: 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.00) 100%);
+        background: transparent;
     }
     &-wrap {
         width: 355px;
@@ -107,10 +107,17 @@ $lineGradient1: linear-gradient(90deg, #fbfbfb, #ffffff66);
     }
     &-loading {
         display: flex;
-        margin:  155px auto;
+        margin: 0 auto;
+        padding-top: 155px;
+        padding-bottom: 155px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.00) 100%);
+        
         &-img {
             width: 30px;
             height: 30px;
         }
+    }
+    .nut-empty {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.00) 100%);
     }
 }
