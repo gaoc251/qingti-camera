@@ -68,7 +68,7 @@ function Index() {
   useShareAppMessage(()=>{
     return {
       title: '我用AI智能生成了一张宝宝的头像，你也快来玩吧！',
-      imageUrl: '/public/home/share_img.png',
+      imageUrl: `${staticCdn}/public/home/share_img.png`,
       path: `/pages/index/index`,
     };
   })

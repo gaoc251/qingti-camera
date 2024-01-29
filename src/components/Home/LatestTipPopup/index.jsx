@@ -17,8 +17,7 @@ export default function LatestTipPopup(props) {
     <Popup visible={isVisible || false} onClose={()=>{onclose?.()}} closeable round className='latest-tip-popup'>
       <View className='latest-tip-popup-tip'>当前有任务正在进行先去看看吧~</View>
       <Image className='latest-tip-popup-img' 
-        // src='../../public/home/latestTip_new.png' 
-        src={checkStatuse?'../../public/home/latestTip.png':'../../public/home/latestTip_new.png'}
+        src={checkStatuse?`${staticCdn}/public/home/latestTip.png`:`${staticCdn}/public/home/latestTip_new.png`}
       />
       <View className='latest-tip-popup-btn' onClick={jumpAction}>立即查看</View>
     </Popup>
