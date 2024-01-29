@@ -215,23 +215,23 @@ function Result() {
           <View className='result-top-info'>
             <View className='result-top-info-text'>{imgInfo.themeName}</View>
             <View className='result-top-info-change' onClick={jumpToHome}>
-              <Image src='../../public/result/exchange.png' className='result-top-info-change-icon' />
+              <Image src={`${staticCdn}/public/result/exchange.png`} className='result-top-info-change-icon' />
               <View className='result-top-info-change-text'>点击更换风格</View>
             </View>
           </View>
         </View>
         <View className='result-top-again' onClick={()=>{handleAgainBtn(true)}}>
           <View className='result-top-again-text'>重新上传照片</View>
-          <Image src='../../public/result/jump.png' className='result-top-again-icon' />
+          <Image src={`${staticCdn}/public/result/jump.png`} className='result-top-again-icon' />
         </View>
       </View>
       <View className='result-img'>
-        {!imgInfo.pics && <Image className='result-img-bg' src='../../public/result/bg.png' />}
+        {!imgInfo.pics && <Image className='result-img-bg' src={`${staticCdn}/public/result/bg.png`} />}
         {imgInfo.pics && <Image className='result-img-bg' src={imgInfo.pics[currentIndex]} />}
-        <Image className='result-img-icon' src='../../public/result/home_icon.png'/>
+        <Image className='result-img-icon' src={`${staticCdn}/public/result/home_icon.png`} />
         <View className='result-img-text'>青提相机</View>
         <View className='result-img-tip'>青提相机</View>
-        <Loading direction="vertical" icon={<Image className='result-img-loading' src='../../public/result/loading.png' />}/>
+        <Loading direction="vertical" icon={<Image className='result-img-loading' src={`${staticCdn}/public/result/loading.png`} />}/>
       </View>
       
       <View className='result-btns'>
@@ -239,7 +239,7 @@ function Result() {
           return <View className={classNames('result-btns-item-border', {'active': index == currentIndex})} onClick={()=>clickResBtn(index)} key={index}>
             <View className='result-btns-item' >
             {item && <Image src={item} className='result-btns-item-img'/>}
-            {!item && <Loading direction="vertical" icon={<Image className='result-btns-item-loading' src='../../public/result/loading.png' />}/>}
+            {!item && <Loading direction="vertical" icon={<Image className='result-btns-item-loading' src={`${staticCdn}/public/result/loading.png`} />}/>}
           </View>
           </View>
         })}
@@ -248,14 +248,14 @@ function Result() {
           className={classNames('result-btns-item again', {'nodisable': !saveDisable})}
           onClick={againDraw}
         >
-          <Image className='result-btns-item-again' src='../../public/result/again.png' />
+          <Image className='result-btns-item-again' src={`${staticCdn}/public/result/again.png`} />
           <View className='result-btns-item-text'>重新绘制</View>
         </View>
       </View>
 
      
       <View className={classNames('result-save', {'active': !saveDisable})} onClick={saveImg}>
-        <Image className='result-save-icon' src='../../public/result/save.png'/>
+        <Image className='result-save-icon' src={`${staticCdn}/public/result/save.png`}/>
         <View className='result-save-text'>保存当前图片</View>
       </View>
       <View className='result-tip'>可用作微信头像、发表朋友圈</View>

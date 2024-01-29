@@ -1,5 +1,7 @@
 import Taro from "@tarojs/taro";
-const baseUrl = ' https://mock.mengxuegu.com/mock/65a8b8cfc4cd67421b34c78d/api'
+// const baseUrl = 'https://mock.mengxuegu.com/mock/65a8b8cfc4cd67421b34c78d/api'
+
+const baseUrl = 'http://www.carton622.cn'
 
 
 export async function Request(method, url, params = {}, header = {}) {

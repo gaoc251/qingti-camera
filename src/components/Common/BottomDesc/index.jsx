@@ -10,7 +10,7 @@ export default function BottomDesc(props) {
   
   return (
     <View className='bottom-desc'>
-        <Image className='bottom-desc-logo' src='../../public/home/Subtract.png'/>
+        <Image className='bottom-desc-logo' src={`${staticCdn}/public/home/Subtract.png`} />
         <View className='bottom-desc-title'>青提相机</View>
         {tip && <View className='bottom-desc-tip'>优秀分享看完啦，快亲自试一试吧!</View>}
     </View>

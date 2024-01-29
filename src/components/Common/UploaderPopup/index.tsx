@@ -15,7 +15,7 @@ export default function UploaderPopup(props) {
     setOpenId(_openId)
   }, [])
 
-  const [imageUrl, setImageUrl] = useState('https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png')
+  const [imageUrl, setImageUrl] = useState('')
   
   const cutImage = async (data) => {
     let _base64 = await fileToBase64(data)
@@ -25,7 +25,6 @@ export default function UploaderPopup(props) {
       openid: openId,
       imgStr: _base64
     }
-    debugger
     Taro.navigateTo({
       url: `/pages/result/index?id=${currentIndex}`
     })
@@ -33,30 +32,22 @@ export default function UploaderPopup(props) {
 
   // 转base64
   const fileToBase64 = async (filePath) => {
-    let res = [];
-    for (const item of filePath) {
-      let itemBase64 =''
-      const base64 = Taro.getFileSystemManager().readFileSync(item.path, "base64");
-      if (base64) {
-        itemBase64 = "data:image/jpeg;base64," + base64;
-      }
-      res.push({url: itemBase64})
-    }
-    return res
+    const base64 = Taro.getFileSystemManager().readFileSync(filePath, "base64");
+    return base64
   }
 
   const renderImg = () =>{
     const arrConfig = [{
       text: '完整正面',
-      imgUrl: '../../public/home/example1.png',
+      imgUrl: `${staticCdn}/public/home/example1.png`,
       textColor: 'rgba(44, 209, 130, 1)'
     },{
       text: '模糊不清',
-      imgUrl: '../../public/home/example2.png',
+      imgUrl: `${staticCdn}/public/home/example2.png`,
       textColor: 'rgba(255, 192, 98, 1)'
     },{
       text: '遮挡不全',
-      imgUrl: '../../public/home/example3.png',
+      imgUrl: `${staticCdn}/public/home/example3.png`,
       textColor: 'rgba(255, 192, 98, 1)'
     }]
     return <View className='uploader-popup-img'>
@@ -68,7 +59,7 @@ export default function UploaderPopup(props) {
   }
 
   return (
-    <Popup visible={ isVisible } style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute'}} closeable closeIcon={'../../../public/home/close.png'} position="bottom" onClose={ () => { onClose?.() }} className='uploader-popup'>
+    <Popup visible={ isVisible } style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute'}} closeable closeIcon={`${staticCdn}/public/home/close.png`} position="bottom" onClose={ () => { onClose?.() }} className='uploader-popup'>
       <View className='uploader-popup-top'>
         <View className='uploader-popup-top-title'>上传一张照片</View>
       </View>

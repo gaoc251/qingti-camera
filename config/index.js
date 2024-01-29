@@ -14,6 +14,7 @@ const config = {
   outputRoot: 'dist',
   plugins: ['@tarojs/plugin-html'],
   defineConstants: {
+    staticCdn: '"https://carton-public.oss-cn-beijing.aliyuncs.com"'
   },
   copy: {
     patterns: [

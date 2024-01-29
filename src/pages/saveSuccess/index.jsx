@@ -35,7 +35,7 @@ function SaveSuccess() {
   }
 
   const res = {
-    imgUrl: '../../public/saveSuccess/result.png',
+    imgUrl: `${staticCdn}/public/saveSuccess/result.png`,
 
   }
 
@@ -87,7 +87,7 @@ function SaveSuccess() {
       <View className='save-success-top'>
         <View className='save-success-img'>
           <Image src={imgUrl} className='save-success-img-res'/>
-          <Image src='../../public/saveSuccess/album.png' className='save-success-img-album' />
+          <Image src={`${staticCdn}/public/saveSuccess/album.png`} className='save-success-img-album' />
         </View>
         <View className='save-success-tip'>已保存到手机相册</View>
         <View className='save-success-btns'>
@@ -98,19 +98,19 @@ function SaveSuccess() {
 
       <View className='save-success-share'>
         <View className='save-success-share-title'>
-          <Image src='../../public/saveSuccess/share.png' className='save-success-share-icon'/>
+          <Image src={`${staticCdn}/public/saveSuccess/share.png`} className='save-success-share-icon'/>
           分享到
         </View>
         <View className='save-success-share-btns'>
           <Button className='save-success-share-btns-item' openType='share'>
             <View className='save-success-share-btns-item-img'>
-              <Image src='../../public/saveSuccess/weixin.png' className='save-success-share-btns-item-img-icon' />
+              <Image src={`${staticCdn}/public/saveSuccess/weixin.png`} className='save-success-share-btns-item-img-icon' />
             </View>
             <View className=''>微信好友</View>
           </Button>
           <View className='save-success-share-btns-item' onClick={()=>{openPenyouquan(true)}}>
             <View className='save-success-share-btns-item-img'>
-              <Image src='../../public/saveSuccess/weixin_circle.png' className='save-success-share-btns-item-img-icon' />
+              <Image src={`${staticCdn}/public/saveSuccess/weixin_circle.png`} className='save-success-share-btns-item-img-icon' />
             </View>
             <View className=''>朋友圈</View>
           </View>
@@ -123,7 +123,7 @@ function SaveSuccess() {
 
       <UploaderPopup isVisible={isVisible} onClose={()=>{handleChangeBtn(false)}} />
 
-      {isVisibleTip && <Image className='save-success-sharetip' src='../../public/saveSuccess/tip.png' onClick={()=>{openPenyouquan(false)}} />}
+      {isVisibleTip && <Image className='save-success-sharetip' src={`${staticCdn}/public/saveSuccess/tip.png`} onClick={()=>{openPenyouquan(false)}} />}
 
       {isResidueTimesVisible &&<NoneCountPopup isVisible={isResidueTimesVisible} onclose={()=>{
         handleNoneCountBtn(false)

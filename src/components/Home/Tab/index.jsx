@@ -111,8 +111,8 @@ function HomeTabs(props) {
   useEffect (()=> {
     setLoading(true)
     Request('get', getHomeTypeList, {}).then(res => {
-      setTypeList(res.data)
-      Request('get', getHomeTabContent, {type: res.data[0].type}).then(resC => {
+      setTypeList(res.data.theme)
+      Request('get', getHomeTabContent, {type: res.data.theme[0].type}).then(resC => {
         setTypeContent(resC.data)
       })
     })
@@ -188,34 +188,6 @@ function HomeTabs(props) {
 
   return (
     <View className="home-tabs">
-      {/* <View className='home-tabs-title'>
-        {tabData.length && tabData.map((titleItem, index) =><View className='home-tabs-title-item' key={index} onClick={()=>{changeTab(titleItem.key)}}>
-          {titleItem.title}
-        </View>)}
-      </View>
-      <View className='home-tabs-list'>
-        <View className='home-tabs-list-left'>
-          { leftShowList && leftShowList.map((item,index) => <View className='home-tabs-list-item' key={`left_${index}`}>
-              <Image src={item.imgUrl} className='home-tabs-list-item-img' mode='widthFix'/>
-              {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
-              <View className='home-tabs-list-item-bottom'>
-                <Image src={item.avatar} className='home-tabs-list-item-avatar' />
-                <View className='home-tabs-list-item-username'>{item.username}</View>
-              </View>
-            </View>)}
-        </View>
-
-        <View className='home-tabs-list-right'>
-          { rightShowList && rightShowList.map((item,index) => <View className='home-tabs-list-item' key={`right_${index}`}>
-            <Image src={item.imgUrl} className='home-tabs-list-item-img' mode='widthFix'/>
-            {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
-            <View className='home-tabs-list-item-bottom'>
-              <Image src={item.avatar} className='home-tabs-list-item-avatar' />
-              <View className='home-tabs-list-item-username'>{item.username}</View>
-            </View>
-          </View>)}
-        </View>
-      </View> */}
       <Tabs 
         value={tabvalue} 
         onChange={(value) => {
@@ -226,7 +198,7 @@ function HomeTabs(props) {
       >
         {typeList && typeList.length && typeList.map((item,index) => <Tabs.TabPane title={item.name}>
         
-          { loading && rightShowList.length == 0 && leftShowList.length == 0 && <Loading className='home-tabs-loading' direction="vertical" icon={<Image className='home-tabs-loading-img' src='../../public/result/loading.png' />}>加载中</Loading>}
+          { loading && rightShowList.length == 0 && leftShowList.length == 0 && <Loading className='home-tabs-loading' direction="vertical" icon={<Image className='home-tabs-loading-img' src={`${staticCdn}/public/result/loading.png`} />}>加载中</Loading>}
           {typeContent.length == 0 && <Empty />}
           {typeContent.length > 0 && <View className='home-tabs-list'>
             <View className='home-tabs-list-left'>

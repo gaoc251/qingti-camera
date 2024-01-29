@@ -14,6 +14,8 @@ import NoneCountPopup from '../../components/Common/NoneCountPopup'
 
 import { getSystemInfo } from '../../components/Common/NavBar'
 
+// const staticCdn = 'https://carton-public.oss-cn-beijing.aliyuncs.com'
+
 function Index() {
   const [isVisible, setIsVisible] = useState(false)
   const [isLatestVisible, setIsLatestVisible] = useState(false)
@@ -133,7 +135,7 @@ function Index() {
         background='#fff'
         renderCenter={
           <View className='index-nav-bar'>
-            <Image className='index-nav-bar-icon' src='../../public/home/home_icon.png'/>
+            <Image className='index-nav-bar-icon' src={`${staticCdn}/public/home/home_icon.png`}/>
             <View className='index-nav-bar-title'>青提相机</View>
           </View>
         }
@@ -146,10 +148,10 @@ function Index() {
             <Text className='index-top-tip'>由AI生成，内容仅供娱乐参考</Text>
           </View>
           { !isNewUser && !checkStatuse && <Image className='index-top-latest' 
-            src={checkStatuse?'../../public/home/latestTip.png':'../../public/home/latestTip_new.png'}
+            src={checkStatuse?`${staticCdn}/public/home/latestTip.png`: `${staticCdn}/public/home/latestTip_new.png`}
             onClick={()=>{setIsLatestVisible(true)}}/>}
         </View>
-        <Image className='index-top-none' src='../../public/home/bg.png' style={{top: navBarHeight + 'px'}}/>
+        <Image className='index-top-none' src={`${staticCdn}/public/home/bg.png`} style={{top: navBarHeight + 'px'}}/>
       </View>
 
       <Tab onChange={changeThemeIndex} navBarHeight={navBarHeight} />
@@ -158,7 +160,7 @@ function Index() {
         <View className='index-experience-btn' onClick={()=>{handleExperienceBtn(true)}}>
           <View className='index-experience-btn-text'>
             立即体验
-            <Image className='index-experience-btn-text-icon' src='../../public/home/star.png' />
+            <Image className='index-experience-btn-text-icon' src={`${staticCdn}/public/home/star.png`} />
           </View>
           <View className='index-experience-btn-tip'>14876人正在生成</View>
         </View>
@@ -167,7 +169,7 @@ function Index() {
       <View className='index-bottom'></View>
 
       <View className='index-desc'>
-        <Image className='index-desc-logo' src='../../public/home/Subtract.png'/>
+        <Image className='index-desc-logo' src={`${staticCdn}/public/home/Subtract.png`}/>
         <View className='index-desc-title'>青提相机</View>
         <View className='index-desc-tip'>优秀分享看完啦，快亲自试一试吧!</View>
       </View>

@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "qingti-camera",
   "description": "青提相机",
-  "appid": "touristappid",
+  "appid": "wx2ba784ed3decc76b",
   "setting": {
     "urlCheck": true,
     "es6": false,
