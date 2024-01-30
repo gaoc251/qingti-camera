@@ -61,7 +61,7 @@ function Index() {
   // 获取 剩余次数
   const fetchResidueTimes = () => {
     Request('get', getUselimite, {openid:openId}).then(res=>{
-      setResidueTimes(res.data.limite)
+      setResidueTimes(res.data.limit)
     })
   }
 
