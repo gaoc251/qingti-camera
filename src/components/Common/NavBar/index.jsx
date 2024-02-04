@@ -89,12 +89,16 @@ if (Taro.globalSystemInfo && !Taro.globalSystemInfo.ios) {
     systemInfo.ios = ios; //是否ios
     Taro.globalSystemInfo = systemInfo; //将信息保存到全局变量中,后边再用就不用重新异步获取了
     //console.log('systemInfo', systemInfo);
+
+    console.log("statusBarHeight", systemInfo.statusBarHeight)
+    console.log("")
     return systemInfo;
   }
 }
 
 let globalSystemInfo = getSystemInfo()
 
+console.log("globalSystemInfo", globalSystemInfo)
 
 export default function NavBar(props) {
     const [configStyle, setConfigStyle] = useState({})
@@ -127,6 +131,8 @@ export default function NavBar(props) {
     
             let _globalSystemInfo = setStyle(globalSystemInfo)
             setConfigStyle(_globalSystemInfo)
+        } else {
+          setConfigStyle(globalSystemInfo)
         }
     })
 

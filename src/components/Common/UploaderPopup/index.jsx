@@ -3,11 +3,13 @@ import { View, Image } from '@tarojs/components'
 import { Popup, AvatarCropper, Button, Avatar } from '@nutui/nutui-react-taro';
 import { Refresh, Retweet } from '@nutui/icons-react-taro'
 import Taro from '@tarojs/taro';
+import { img2img } from '../../../utils/api';
+import { Request } from '../../../utils/request';
 import './index.scss'
 
 
 export default function UploaderPopup(props) {
-  const {isVisible, onClose, currentIndex} = props
+  const {isVisible, onclose, currentIndex} = props
   const [openId, setOpenId] = useState('')
 
   useEffect(() => {
@@ -21,12 +23,22 @@ export default function UploaderPopup(props) {
     let _base64 = await fileToBase64(data)
     setImageUrl(_base64)
     let params = {
-      key: currentIndex,
+      imgType: currentIndex,
       openid: openId,
-      imgStr: _base64
+      imgStr: _base64,
+      reuse: false
     }
-    Taro.navigateTo({
-      url: `/pages/result/index?id=${currentIndex}`
+    Request('post', img2img, params).then(res => {
+      if (res.infoCode == 10000) {
+        Taro.navigateTo({
+          url: `/pages/result/index?id=${res.data.taskid}`
+        })
+      } else {
+        Taro.showToast({
+          title: res.info,
+          icon: 'none'
+        })
+      }
     })
   }
 
@@ -59,7 +71,7 @@ export default function UploaderPopup(props) {
   }
 
   return (
-    <Popup visible={ isVisible } style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute'}} closeable closeIcon={`${staticCdn}/public/home/close.png`} position="bottom" onClose={ () => { onClose?.() }} className='uploader-popup'>
+    <Popup visible={ isVisible } style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'absolute'}} closeable closeIcon={`${staticCdn}/public/home/close.png`} position="bottom" onClose={ () => { onclose?.() }} className='uploader-popup'>
       <View className='uploader-popup-top'>
         <View className='uploader-popup-top-title'>上传一张照片</View>
       </View>
@@ -67,7 +79,8 @@ export default function UploaderPopup(props) {
       <View className='uploader-popup-btns'>
         <AvatarCropper
           className='uploader-popup-btns-item album'
-          toolbarPosition="top"
+          // toolbarPosition="top"
+          sizeType={['compressed']}
           editText=""
           sourceType={['album']} 
           onConfirm={cutImage}

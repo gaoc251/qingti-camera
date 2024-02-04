@@ -22,97 +22,17 @@ function HomeTabs(props) {
   const [typeList, setTypeList] = useState([]); // 风格title
   const [typeContent, setTypeContent] = useState([]); // 风格title
 
-  
-
-  const res = [{
-    key: 1,
-    title: '写实油画',
-    content: [{
-      id: 1,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '给大家看看我的可爱宝宝吧，变成这样啦哈哈',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '萱萱妈妈'
-    },{
-      id: 2,
-      imgUrl: 'https://i0.hdslb.com/bfs/archive/320d0d306b09fb580c616e7f475caaedeff0e601.jpg',
-      text: '可爱的宝贝',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '夏甜甜🌸'
-    },{
-      id: 3,
-      imgUrl: 'https://img1.baidu.com/it/u=437261551,167616624&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704992400&t=2c48aadc72d68721ec3b8846f3aacb3c',
-      text: '给大家看看我的可爱宝宝吧，变成这样啦哈哈',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '萱萱妈妈'
-    },{
-      id: 4,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '可爱的宝贝',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '夏甜甜🌸'
-    },,{
-      id: 9,
-      imgUrl: 'https://img1.baidu.com/it/u=437261551,167616624&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704992400&t=2c48aadc72d68721ec3b8846f3aacb3c',
-      text: '给大家看看我的可爱宝宝吧，变成这样啦哈哈',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '萱萱妈妈'
-    },{
-      id: 10,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '可爱的宝贝',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '夏甜甜🌸'
-    }
-  ]
-  },{
-    key: 2,
-    title: '日系漫画',
-    content: [{
-      id: 5,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '给大家看看我的可爱宝宝吧，变成这样啦哈哈',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '萱萱妈妈'
-    },{
-      id: 6,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '可爱的宝贝',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '夏甜甜🌸'
-    }]
-  },{
-    key: 3,
-    title: '巾帼萌宝',
-    content: []
-  },{
-    key: 4,
-    title: '龙年萌宝',
-    content: [{
-      id: 7,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '给大家看看我的可爱宝宝吧，变成这样啦哈哈',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '萱萱妈妈'
-    }]
-  },{
-    key: 5,
-    title: '魔幻萌宝',
-    content: [{
-      id: 8,
-      imgUrl: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
-      text: '可爱的宝贝',
-      avatar: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/github.46c47564.png',
-      username: '夏甜甜🌸'
-    }]
-  }]
-
 
   useEffect (()=> {
     setLoading(true)
     Request('get', getHomeTypeList, {}).then(res => {
-      setTypeList(res.data.theme)
+      let _theme = res.data.theme
+      setTypeList(_theme)
+      onChange(_theme[0].type)
       Request('get', getHomeTabContent, {type: res.data.theme[0].type}).then(resC => {
+        if (resC.data.length == 0) {
+          setLoading(false)
+        }
         setTypeContent(resC.data)
       })
     })
@@ -180,8 +100,11 @@ function HomeTabs(props) {
     setLeftShowList([])
     setRightShowList([])
     setLoading(true)
-    onChange(value)
+    onChange(typeList[value].type)
     Request('get', getHomeTabContent, {type: typeList[value].type}).then(resC => {
+      if(resC.data.length == 0){
+        setLoading(false)
+      }
       setTypeContent(resC.data)
     })
   }

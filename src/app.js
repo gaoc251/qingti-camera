@@ -20,7 +20,7 @@ function App(props) {
       success: loginres => {
         if (loginres.code) {
           Request('get', getOpenId, {'js_code': loginres.code}).then((res) => {
-            let openId = res.openid
+            let openId = res.data.openid
             Taro.setStorage({
                 key: "openId",
                 data: openId

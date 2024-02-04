@@ -4,13 +4,14 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import './index.scss'
 import { useShareAppMessage } from '@tarojs/taro'
 import { Request } from '../../utils/request'
-import { getNewUser, getImg, getUselimite } from '../../utils/api'
+import { getNewUser, getImg, getUselimit } from '../../utils/api'
 
 import NavBar from '../../components/Common/NavBar'
 import Tab from '../../components/Home/Tab'
 import UploaderPopup from '../../components/Common/UploaderPopup'
 import LatestTipPopup from '../../components/Home/LatestTipPopup'
 import NoneCountPopup from '../../components/Common/NoneCountPopup'
+import CustomNavBar from '../../components/Common/CustomNavBar'
 
 import { getSystemInfo } from '../../components/Common/NavBar'
 
@@ -24,7 +25,7 @@ function Index() {
   const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
   const [openId, setOpenId] = useState(''); // openid
   const [isNewUser, setIsNewUser] = useState(true); // 首次登陆判断 
-  const [checkStatuse, setCheckStatuse] = useState(false) // 用户是否查看过新生成的作品
+  const [checkStatus, setCheckStatus] = useState(true) // 用户是否查看过新生成的作品
   const [taskid, setTaskid] = useState(0) // 记录作品任务ID
   const [navBarHeight, setNavBarHeight] = useState(60); // 自定义导航高度
 
@@ -53,15 +54,17 @@ function Index() {
   // 获取当前用户是否有未查看的任务
   const fetchImg = () => {
     Request('get', getImg, {openid:openId}).then(res=>{
-      setCheckStatuse(res.data.checkStatuse)
-      setTaskid(res.data.taskid)
+      let {data} = res
+      setCheckStatus(data && data.checkStatus)
+      setTaskid((data && data.taskid) || 0)
     })
   }
 
   // 获取 剩余次数
   const fetchResidueTimes = () => {
-    Request('get', getUselimite, {openid:openId}).then(res=>{
-      setResidueTimes(res.data.limit)
+    Request('get', getUselimit, {openid:openId}).then(res=>{
+      let {data} = res
+      setResidueTimes((data && data.limit) || false)
     })
   }
 
@@ -130,9 +133,17 @@ function Index() {
 
   return (
     <View className="index">
-      <NavBar
+      {/* <NavBar
         title=''
         background='#fff'
+        renderCenter={
+          <View className='index-nav-bar'>
+            <Image className='index-nav-bar-icon' src={`${staticCdn}/public/home/home_icon.png`}/>
+            <View className='index-nav-bar-title'>青提相机</View>
+          </View>
+        }
+      /> */}
+      <CustomNavBar 
         renderCenter={
           <View className='index-nav-bar'>
             <Image className='index-nav-bar-icon' src={`${staticCdn}/public/home/home_icon.png`}/>
@@ -147,8 +158,8 @@ function Index() {
             <View className='index-top-title'>用AI生成全新专属风格！</View>
             <Text className='index-top-tip'>由AI生成，内容仅供娱乐参考</Text>
           </View>
-          { !isNewUser && !checkStatuse && <Image className='index-top-latest' 
-            src={checkStatuse?`${staticCdn}/public/home/latestTip.png`: `${staticCdn}/public/home/latestTip_new.png`}
+          { !isNewUser && !checkStatus && <Image className='index-top-latest' 
+            src={checkStatus?`${staticCdn}/public/home/latestTip.png`: `${staticCdn}/public/home/latestTip_new.png`}
             onClick={()=>{setIsLatestVisible(true)}}/>}
         </View>
         <Image className='index-top-none' src={`${staticCdn}/public/home/bg.png`} style={{top: navBarHeight + 'px'}}/>
@@ -175,7 +186,7 @@ function Index() {
       </View>
       
       <UploaderPopup isVisible={isVisible} onclose={()=>{handleExperienceBtn(false)}} currentIndex={currentIndex} />
-      <LatestTipPopup isVisible={isLatestVisible} taskid={taskid} checkStatuse={checkStatuse} onclose={()=>{handleLatestTipBtn(false)}}/>
+      <LatestTipPopup isVisible={isLatestVisible} taskid={taskid} checkStatus={checkStatus} openId={openId} onclose={()=>{handleLatestTipBtn(false)}}/>
 
       {isResidueTimesVisible &&<NoneCountPopup isVisible={isResidueTimesVisible} onclose={()=>{
         handleNoneCountBtn(false)

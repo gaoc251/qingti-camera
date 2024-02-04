@@ -15,7 +15,7 @@ $lineGradient1: linear-gradient(90deg, #fbfbfb, #ffffff30);
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.00) 100%);
 
         &-left, &-right {
-            width: calc(50% - 5px);
+            flex: 1;
         }
         &-left {
             margin-right: 10px;

@@ -31,6 +31,7 @@ export default function AdProcessPopup(props) {
 
   useEffect(()=> {
     setSeconds(40)
+    setPercent(30)
   }, [isReuse])
 
   useInterval(

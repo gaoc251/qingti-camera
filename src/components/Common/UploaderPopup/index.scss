@@ -65,4 +65,14 @@
         // }
       }
     }
+
+    .nut-avatar-cropper-popup {
+      // top: 90px;
+      .nut-avatar-cropper-popup-highlight {
+      }
+      .nut-avatar-cropper-popup-canvas  {
+        bottom: 80px;
+        height: calc(100vh - 80px) !important;
+      }
+    }
   }

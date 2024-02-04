@@ -8,7 +8,7 @@ import UploaderPopup from '../../components/Common/UploaderPopup'
 import NoneCountPopup from '../../components/Common/NoneCountPopup'
 
 import { Request } from '../../utils/request'
-import {  getUselimite } from '../../utils/api';
+import {  getUselimit } from '../../utils/api';
 
 function SaveSuccess() {
   const [isVisible, setIsVisible] = useState(false)
@@ -29,7 +29,7 @@ function SaveSuccess() {
 
   // 获取 剩余次数
   const fetchResidueTimes = () => {
-    Request('get', getUselimite, {openid:openId}).then(res=>{
+    Request('get', getUselimit, {openid:openId}).then(res=>{
       setResidueTimes(res.data.limit)
     })
   }

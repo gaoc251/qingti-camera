@@ -12,6 +12,7 @@ export async function Request(method, url, params = {}, header = {}) {
             method,
             header: Object.assign(header, {'Content-type': 'application/json'}),
             success: (result) => {
+                console.log("请求接口URL", url, params, result)
                 const res = result.data
                 if (res?.infoCode == 10000 || res?.infoCode == 10001) {
                     // return res.data
@@ -30,6 +31,11 @@ export async function Request(method, url, params = {}, header = {}) {
                     icon: 'none'
                 })
             }
+        }).catch(err => {
+            Taro.showToast({
+                title: '服务器异常',
+                icon: 'none'
+            })
         })
     })
 }

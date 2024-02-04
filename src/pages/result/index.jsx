@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import './index.scss'
 import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { Request } from '../../utils/request';
-import { getImg, img2img, getUselimite, getTaskStatus } from '../../utils/api';
+import { getImg, img2img, getUselimit, getTaskStatus, modCheckStatus } from '../../utils/api';
 
 import { Loading } from '@nutui/nutui-react-taro';
 import UploaderPopup from '../../components/Common/UploaderPopup';
@@ -22,30 +22,35 @@ function Result() {
     type: 'video/mp4',
   })
 
-  const [imgInfo, setImgInfo] = useState([])
+  const [imgInfo, setImgInfo] = useState({})
   const [currentIndex, setCurrentIndex] = useState([0]) // 切换生成图片索引
 
   const [openId, setOpenId] = useState('')
   const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
   const [residueTimes, setResidueTimes] = useState(0) // 剩余次数
   const [isReuse, setIsReuse] = useState(false); // 是否是重新绘制
+  
   let taskId = getCurrentInstance().router.params.id // 任务ID
   let openLunxun = true; // 默认开启轮训操作
   let timer = null 
 
-  const fetchTaskStatus = useCallback( async()=>{
+  const fetchTaskStatus = useCallback( async(userId)=>{
     console.log("lunxun")
-    await Request('get', getTaskStatus, {openid: openId, taskid: taskId}).then(res => {
+    await Request('get', getTaskStatus, {openid: userId, taskid: taskId}).then(res => {
       let _status = res.data.status
       if (_status == 'running') {
-        clearInterval(timer)
-        getImgData()
+        // 生成中
       } else if (_status == 'failed') {
+        // 生成失败
         clearInterval(timer)
         Taro.showToast({
           url: '生成失败',
           icon: 'none'
         })
+      } else if (_status == 'success') {
+        // 生成成功
+        getImgData(userId)
+        clearInterval(timer)
       }
     })
   }, [])
@@ -57,9 +62,11 @@ function Result() {
 
   useEffect(() => {
     if (openLunxun && openId) {
-      timer = setInterval(fetchTaskStatus, 5000)
+      timer = setInterval(()=>{
+        fetchTaskStatus(openId)
+      }, 5000)
     }
-  }, [openId, taskId])
+  }, [openId])
 
   // useShareAppMessage(()=>{
   //   return {
@@ -140,33 +147,42 @@ function Result() {
   }
 
   useEffect(()=>{
-    openId && getImgData()
+    openId && getImgData(openId)
     openId && fetchResidueTimes()
   }, [openId])
 
   // 获取 剩余次数
   const fetchResidueTimes = () => {
-    Request('get', getUselimite, {openid:openId}).then(res=>{
+    Request('get', getUselimit, {openid:openId}).then(res=>{
       setResidueTimes(res.data.limit)
     })
   }
 
-  const getImgData = () => {
-    Request('get', getImg, { openid:openId, taskid: taskId }).then(res => {
+  const getImgData = (userId) => {
+    Request('get', getImg, { openid: userId, taskid: taskId }).then(res => {
       const { infoCode, data } = res
       if (infoCode == '10000') {
         setImgInfo({
-          avatar: '',
-          themeName: '',
-          type: '',
-          pics: data.pics
+          avatar: data.typeUrl,
+          themeName: data.typeName,
+          type: data.imgType || 1,
+          pics: data.pics,
         })
         setSaveDisable(false)
         setIsVisibleAdProcess(false)
         openLunxun=false
         clearInterval(timer)
+
+        // 更新图片状态
+        changeStatus()
       } else if (infoCode == 10001) {
         setSaveDisable(true)
+        setImgInfo({
+          avatar: data.typeUrl,
+          themeName: data.typeName,
+          type: data.imgType || 1,
+          pics: data.pics,
+        })
       } else if (infoCode == 30000) {
         Taro.showToast({
           title: '生成失败，稍后再试',
@@ -183,20 +199,24 @@ function Result() {
 
   // 重新绘制
   const againDraw = () => {
-    if (residueTimes) {
-      setIsResidueTimesVisible(true)
-      return false
-    }
     if (saveDisable) {
       Taro.showToast({
         title: '正在生成中...请稍后',
         icon: 'none'
       })
+      return false
+    } else if (residueTimes) {
+      setIsResidueTimesVisible(true)
+      return false
     } else {
+      let _imgInfo = imgInfo
+      _imgInfo.pics = []
+      setImgInfo(_imgInfo)
+      openLunxun = true
       setIsReuse(true)
       setIsVisibleAdProcess(true)
       // 重新绘制调用图生图接口
-      Request('post', img2img, {openid: openId, reuse: true, type: imgInfo.type}).then(res => {
+      Request('post', img2img, {openid: openId, reuse: true, imgType: imgInfo.type}).then(res => {
         taskId = res.data.taskid
       })
     }
@@ -205,6 +225,18 @@ function Result() {
    // 关闭剩余次数
    const handleNoneCountBtn = (flag) => {
     setIsResidueTimesVisible(flag)
+  }
+
+  // 更改状态
+  const  changeStatus = () => {
+    Request('get', modCheckStatus, {openid: openId}).then(res => {
+      if (res.infoCode !== 10000) {
+        Taro.showToast({
+          title: res.info,
+          icon: 'none'
+        })
+      }
+    })
   }
 
   return (
@@ -226,8 +258,8 @@ function Result() {
         </View>
       </View>
       <View className='result-img'>
-        {!imgInfo.pics && <Image className='result-img-bg' src={`${staticCdn}/public/result/bg.png`} />}
-        {imgInfo.pics && <Image className='result-img-bg' src={imgInfo.pics[currentIndex]} />}
+        {!imgInfo.pics || imgInfo.pics.length == 0 && <Image className='result-img-bg' src={`${staticCdn}/public/result/bg.png`} />}
+        {imgInfo.pics && imgInfo.pics.lenghth > 0 && <Image className='result-img-bg' src={imgInfo.pics[currentIndex]} />}
         <Image className='result-img-icon' src={`${staticCdn}/public/result/home_icon.png`} />
         <View className='result-img-text'>青提相机</View>
         <View className='result-img-tip'>青提相机</View>
