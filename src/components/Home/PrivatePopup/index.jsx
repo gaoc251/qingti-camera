@@ -21,7 +21,7 @@ export default function PrivatePopup(props) {
   }
 
   const jumpAction = () => {
-    let url = 'http://www.baidu.com'
+    let url = 'http://www.carton622.cn/privacy.html'
     Taro.navigateTo({
       url: `/pages/webview/index?src=${encodeURIComponent(url)}`
     })

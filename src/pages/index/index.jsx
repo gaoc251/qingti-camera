@@ -52,8 +52,6 @@ function Index() {
       let isNewUser = res.data.newUser
       setIsNewUser(isNewUser)
       
-      // console.log("Taro.getStorageSync('newUser-private') == ''", Taro.getStorageSync('newUser-private') == '')
-      // debugger
       if (isNewUser && Taro.getStorageSync('newUser-private') == '') {
         setIsPrivateVisible(true)
       }

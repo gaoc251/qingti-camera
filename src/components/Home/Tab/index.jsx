@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import Taro from '@tarojs/taro';
+import Taro, { useReady, useDidHide } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components'
 import { Tabs, Empty, Loading } from '@nutui/nutui-react-taro';
 import { Request } from '../../../utils/request'
@@ -7,7 +7,8 @@ import { Request } from '../../../utils/request'
 import { getHomeTypeList, getHomeTabContent } from '../../../utils/api';
 import './index.scss'
 
-function HomeTabs(props) {
+function HomeTabs (props) {
+  console.log("sssssss渲染")
   const [tabvalue, setTabvalue] = useState('0');
   
   const [rightShowList, setRightShowList] = useState([]);
@@ -21,6 +22,9 @@ function HomeTabs(props) {
 
   const [typeList, setTypeList] = useState([]); // 风格title
   const [typeContent, setTypeContent] = useState([]); // 风格title
+  const [overlap, setOverlap] = useState(false); // 默认不重叠
+
+  let observer = null
 
 
   useEffect (()=> {
@@ -109,6 +113,23 @@ function HomeTabs(props) {
     })
   }
 
+  useReady(()=>{
+    observer = Taro.createIntersectionObserver()
+    observer
+      .relativeTo('.custom-navBar')
+      .observe('.home-tabs', (res) => {
+        console.log("observe", res);
+        setOverlap(res.intersectionRatio > 0)
+      })
+
+  })
+
+  useDidHide(()=>{
+    if (observer) {
+      observer.disconnect()
+    }
+  })
+
   return (
     <View className="home-tabs">
       <Tabs 
@@ -116,10 +137,10 @@ function HomeTabs(props) {
         onChange={(value) => {
           changeTab(value)
         }}
-        tabStyle={{ position: 'sticky', top: navBarHeight + 'px', zIndex: 11, padding: '0 10px'}}
+        tabStyle={ Object.assign({ position: 'sticky', top: navBarHeight + 'px', zIndex: 11, padding: '0 10px'}, overlap?{background: '#fff'}:{})}
         className='home-tabs-wrap'
       >
-        {typeList && typeList.length && typeList.map((item,index) => <Tabs.TabPane title={item.name}>
+        {typeList && typeList.length && typeList.map((item,index) => <Tabs.TabPane title={item.name} className='home-tabs-title'>
           { loading && rightShowList.length == 0 && leftShowList.length == 0 && <Loading className='home-tabs-loading' direction="vertical" icon={<Image className='home-tabs-loading-img' src={`${staticCdn}/public/result/loading.png`} />}>加载中</Loading>}
           {typeContent.length == 0 && <Empty />}
           {typeContent.length > 0 && <View className='home-tabs-list'>
