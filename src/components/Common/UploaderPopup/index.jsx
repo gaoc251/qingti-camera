@@ -10,6 +10,7 @@ import './index.scss'
 
 export default function UploaderPopup(props) {
   const {isVisible, onclose, currentIndex} = props
+  
   const [openId, setOpenId] = useState('')
 
   useEffect(() => {

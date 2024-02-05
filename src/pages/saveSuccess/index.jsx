@@ -3,6 +3,7 @@ import { View, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
 import { useShareAppMessage, useShareTimeline } from '@tarojs/taro'
+import { getCurrentInstance } from '@tarojs/runtime';
 import BottomDesc from '../../components/Common/BottomDesc'
 import UploaderPopup from '../../components/Common/UploaderPopup'
 import NoneCountPopup from '../../components/Common/NoneCountPopup'
@@ -16,6 +17,8 @@ function SaveSuccess() {
   const [residueTimes, setResidueTimes] = useState(0) // 剩余次数
   const [openId, setOpenId] = useState('')
   const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
+
+  let imgType = getCurrentInstance().router.params.imgType // 风格ID
 
   useEffect(() => {
     let _openId = Taro.getStorageSync('openId')
@@ -121,7 +124,7 @@ function SaveSuccess() {
         <BottomDesc />  
       </View>
 
-      <UploaderPopup isVisible={isVisible} onClose={()=>{handleChangeBtn(false)}} />
+      <UploaderPopup isVisible={isVisible} onClose={()=>{handleChangeBtn(false)}} currentIndex={imgType}/>
 
       {isVisibleTip && <Image className='save-success-sharetip' src={`${staticCdn}/public/saveSuccess/tip.png`} onClick={()=>{openPenyouquan(false)}} />}
 

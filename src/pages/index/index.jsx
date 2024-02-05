@@ -12,6 +12,7 @@ import UploaderPopup from '../../components/Common/UploaderPopup'
 import LatestTipPopup from '../../components/Home/LatestTipPopup'
 import NoneCountPopup from '../../components/Common/NoneCountPopup'
 import CustomNavBar from '../../components/Common/CustomNavBar'
+import PrivatePopup from '../../components/Home/PrivatePopup'
 
 import { getSystemInfo } from '../../components/Common/NavBar'
 
@@ -28,6 +29,7 @@ function Index() {
   const [checkStatus, setCheckStatus] = useState(true) // 用户是否查看过新生成的作品
   const [taskid, setTaskid] = useState(0) // 记录作品任务ID
   const [navBarHeight, setNavBarHeight] = useState(60); // 自定义导航高度
+  const [isPrivateVisible, setIsPrivateVisible] = useState(false); // 隐私弹框，新用户展示
 
   useEffect(() => {
     let _openId = Taro.getStorageSync('openId')
@@ -47,7 +49,14 @@ function Index() {
   // 首次登陆接口 
   const fetchNewUser = () => {
     Request('get', getNewUser, {openid:openId}).then(res=>{
-      setIsNewUser(res.data.newUser)
+      let isNewUser = res.data.newUser
+      setIsNewUser(isNewUser)
+      
+      // console.log("Taro.getStorageSync('newUser-private') == ''", Taro.getStorageSync('newUser-private') == '')
+      // debugger
+      if (isNewUser && Taro.getStorageSync('newUser-private') == '') {
+        setIsPrivateVisible(true)
+      }
     })
   }
 
@@ -77,6 +86,14 @@ function Index() {
   })
 
   const handleExperienceBtn = (flag) => {
+    if (isNewUser) {
+      let newUser_private = Taro.getStorageSync('newUser-private')
+      // 加入不同意
+      if (!newUser_private) {
+        setIsPrivateVisible(true)
+        return false
+      }
+    }
     if (residueTimes) {
       setIsResidueTimesVisible(true)
     } else {
@@ -104,45 +121,8 @@ function Index() {
     setNavBarHeight(systemInfo.navBarHeight+systemInfo.navBarExtendHeight)
   }, [])
 
-  // // 自定义导航栏的高度：
-  // useEffect(() => {
-  //   let menuButtonObject = Taro.getMenuButtonBoundingClientRect();
-  //   Taro.getSystemInfo({
-  //     success: (res) => {
-  //       //导航高度
-  //       // let statusBarHeight = res.statusBarHeight,
-  //       //   navHeight =
-  //       //     statusBarHeight +
-  //       //     menuButtonObject.height +
-  //       //     (menuButtonObject.top - statusBarHeight) * 2,
-  //       //   munuButtonTotalHeight =
-  //       //     menuButtonObject.height +
-  //       //     (menuButtonObject.top - statusBarHeight) * 2;
-  //       debugger
-  //       // setNavHeight(navHeight);
-  //       // setStatusBarHeight(statusBarHeight);
-  //       // setMunuButtonTotalHeight(munuButtonTotalHeight);
-
-  //       console.log("111", menuButtonObject.bottom + (menuButtonObject.top - res.statusBarHeight))
-  //     },
-  //     fail(err) {
-  //       console.log(err);
-  //     },
-  //   });
-  // });
-
   return (
     <View className="index">
-      {/* <NavBar
-        title=''
-        background='#fff'
-        renderCenter={
-          <View className='index-nav-bar'>
-            <Image className='index-nav-bar-icon' src={`${staticCdn}/public/home/home_icon.png`}/>
-            <View className='index-nav-bar-title'>青提相机</View>
-          </View>
-        }
-      /> */}
       <CustomNavBar 
         renderCenter={
           <View className='index-nav-bar'>
@@ -191,6 +171,8 @@ function Index() {
       {isResidueTimesVisible &&<NoneCountPopup isVisible={isResidueTimesVisible} onclose={()=>{
         handleNoneCountBtn(false)
       }} />}
+
+      {<PrivatePopup isVisible={isPrivateVisible} onclose={()=>{setIsPrivateVisible(false)}} />}
 
     </View>
   )

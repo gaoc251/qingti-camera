@@ -14,7 +14,7 @@ export async function Request(method, url, params = {}, header = {}) {
             success: (result) => {
                 console.log("请求接口URL", url, params, result)
                 const res = result.data
-                if (res?.infoCode == 10000 || res?.infoCode == 10001) {
+                if (res?.infoCode == 10000 || res?.infoCode == 10001 || res?.infoCode == 30000) {
                     // return res.data
                     resolve(res)
                 } else {

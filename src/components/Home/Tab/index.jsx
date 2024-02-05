@@ -60,7 +60,7 @@ function HomeTabs(props) {
         _rightHeight = rightHeight
     for (let item of typeContent) {
       try {
-        let h = await getImgHeight(item.imgUrl)
+        let h = await getImgHeight(item.imgurl)
         
         if (_leftHeight <= _rightHeight) {
           _leftShowList.push(item)
@@ -120,26 +120,25 @@ function HomeTabs(props) {
         className='home-tabs-wrap'
       >
         {typeList && typeList.length && typeList.map((item,index) => <Tabs.TabPane title={item.name}>
-        
           { loading && rightShowList.length == 0 && leftShowList.length == 0 && <Loading className='home-tabs-loading' direction="vertical" icon={<Image className='home-tabs-loading-img' src={`${staticCdn}/public/result/loading.png`} />}>加载中</Loading>}
           {typeContent.length == 0 && <Empty />}
           {typeContent.length > 0 && <View className='home-tabs-list'>
             <View className='home-tabs-list-left'>
               { leftShowList && leftShowList.map((item,index) => <View className='home-tabs-list-item' key={`left_${index}`}>
-                <Image src={item.imgUrl} className='home-tabs-list-item-img' mode='widthFix' lazyLoad/>
+                <Image src={item.imgurl} className='home-tabs-list-item-img' mode='widthFix' lazyLoad/>
                 {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
                 <View className='home-tabs-list-item-bottom'>
-                  <Image src={item.nava} className='home-tabs-list-item-avatar' />
+                  <Image src={item.avatar} className='home-tabs-list-item-avatar' />
                   <View className='home-tabs-list-item-username'>{item.username}</View>
                 </View>
               </View>)}
             </View>
             <View className='home-tabs-list-right'>
               { rightShowList && rightShowList.map((item,index) => <View className='home-tabs-list-item' key={`right_${index}`}>
-                <Image src={item.imgUrl} className='home-tabs-list-item-img' mode='widthFix' lazyLoad/>
+                <Image src={item.imgurl} className='home-tabs-list-item-img' mode='widthFix' lazyLoad/>
                 {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
                 <View className='home-tabs-list-item-bottom'>
-                  <Image src={item.nava} className='home-tabs-list-item-avatar' />
+                  <Image src={item.avatar} className='home-tabs-list-item-avatar' />
                   <View className='home-tabs-list-item-username'>{item.username}</View>
                 </View>
               </View>)}

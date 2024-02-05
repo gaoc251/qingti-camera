@@ -29,6 +29,7 @@ function Result() {
   const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
   const [residueTimes, setResidueTimes] = useState(0) // 剩余次数
   const [isReuse, setIsReuse] = useState(false); // 是否是重新绘制
+  const [isFailed, setIsFailed] = useState(false); // 是否生成失败
   
   let taskId = getCurrentInstance().router.params.id // 任务ID
   let openLunxun = true; // 默认开启轮训操作
@@ -80,13 +81,13 @@ function Result() {
   const saveImg = () => {
     if (saveDisable) {
       Taro.showToast({
-        title: '正在生成中...请稍后',
+        title: isFailed?'生图失败，请重试':'正在生成中...请稍后',
         icon: 'none'
       })
     } else {
       // 解决办法：1、完善一下用户隐私协议 2、配置downloadFile的合法域名
       Taro.downloadFile({
-        url: 'https://img0.baidu.com/it/u=3968191045,278326663&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1704474000&t=e431e825ad135e46ea80fa66e8a61b39',
+        url: imgInfo.pics[currentIndex],
         success: res => {
           if (res.statusCode === 200) {
             console.log(res)
@@ -114,7 +115,7 @@ function Result() {
         console.log('保存图片成功');
         // 图片保存成功的处理逻辑
         Taro.navigateTo({
-          url: '/pages/saveSuccess/index'
+          url: '/pages/saveSuccess/index?imgType='+imgInfo.type
         })
       },
       fail: (error) => {
@@ -161,29 +162,29 @@ function Result() {
   const getImgData = (userId) => {
     Request('get', getImg, { openid: userId, taskid: taskId }).then(res => {
       const { infoCode, data } = res
+
+      setImgInfo({
+        avatar: data.typeUrl,
+        themeName: data.typeName,
+        type: data.imgType || 1,
+        pics: data.pics,
+      })
+
       if (infoCode == '10000') {
-        setImgInfo({
-          avatar: data.typeUrl,
-          themeName: data.typeName,
-          type: data.imgType || 1,
-          pics: data.pics,
-        })
         setSaveDisable(false)
         setIsVisibleAdProcess(false)
-        openLunxun=false
+        openLunxun = false
         clearInterval(timer)
-
         // 更新图片状态
         changeStatus()
       } else if (infoCode == 10001) {
         setSaveDisable(true)
-        setImgInfo({
-          avatar: data.typeUrl,
-          themeName: data.typeName,
-          type: data.imgType || 1,
-          pics: data.pics,
-        })
       } else if (infoCode == 30000) {
+        openLunxun=false
+        clearInterval(timer)
+        setIsVisibleAdProcess(false)
+        setSaveDisable(true)
+        setIsFailed(true)
         Taro.showToast({
           title: '生成失败，稍后再试',
           icon: 'none'
@@ -199,7 +200,7 @@ function Result() {
 
   // 重新绘制
   const againDraw = () => {
-    if (saveDisable) {
+    if (saveDisable && !isFailed) {
       Taro.showToast({
         title: '正在生成中...请稍后',
         icon: 'none'
@@ -257,9 +258,10 @@ function Result() {
           <Image src={`${staticCdn}/public/result/jump.png`} className='result-top-again-icon' />
         </View>
       </View>
+
       <View className='result-img'>
         {!imgInfo.pics || imgInfo.pics.length == 0 && <Image className='result-img-bg' src={`${staticCdn}/public/result/bg.png`} />}
-        {imgInfo.pics && imgInfo.pics.lenghth > 0 && <Image className='result-img-bg' src={imgInfo.pics[currentIndex]} />}
+        { imgInfo.pics && imgInfo.pics.length > 0 && <Image className='result-img-bg' src={imgInfo.pics[currentIndex]} />}
         <Image className='result-img-icon' src={`${staticCdn}/public/result/home_icon.png`} />
         <View className='result-img-text'>青提相机</View>
         <View className='result-img-tip'>青提相机</View>
@@ -277,7 +279,7 @@ function Result() {
         })}
 
         <View 
-          className={classNames('result-btns-item again', {'nodisable': !saveDisable})}
+          className={classNames('result-btns-item again', {'nodisable': !saveDisable || isFailed})}
           onClick={againDraw}
         >
           <Image className='result-btns-item-again' src={`${staticCdn}/public/result/again.png`} />
@@ -292,7 +294,7 @@ function Result() {
       </View>
       <View className='result-tip'>可用作微信头像、发表朋友圈</View>
       
-      <UploaderPopup isVisible={isVisible} onClose={()=>{handleAgainBtn(false)}} />
+      <UploaderPopup isVisible={isVisible} onClose={()=>{handleAgainBtn(false)}} currentIndex={imgInfo.type}/>
 
       <AdProcessPopup isVisible={isVisiblAdProcess} onClose={()=>{closeAdProcess(false)}} source={source} isReuse={isReuse} />
 
