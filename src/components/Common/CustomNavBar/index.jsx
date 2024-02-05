@@ -24,7 +24,8 @@ const CustomNavBar = (props) => {
         return renderCenter;
         /* eslint-enable */
       }
-}
+  }
+  
 
   return (
     <View
