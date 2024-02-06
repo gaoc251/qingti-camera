@@ -7,6 +7,9 @@ import { Request } from '../../../utils/request'
 import { getHomeTypeList, getHomeTabContent } from '../../../utils/api';
 import './index.scss'
 
+
+const system = Taro.getSystemInfoSync()
+console.log("system", system)
 function HomeTabs (props) {
   console.log("sssssss渲染")
   const [tabvalue, setTabvalue] = useState('0');
@@ -64,14 +67,17 @@ function HomeTabs (props) {
         _rightHeight = rightHeight
     for (let item of typeContent) {
       try {
-        let h = await getImgHeight(item.imgurl)
-        
+        let res = await getImgHeight(item.imgurl)
+        let _scr = system.screenWidth
+        let w = _scr*(375-51)/375/2
+        let h = res.height*w/res.width
+        console.log("wwwwww",w, h)
         if (_leftHeight <= _rightHeight) {
-          _leftShowList.push(item)
-          _leftHeight += h
+          _leftShowList.push({...item, width: w, height:h})
+          _leftHeight += res.height
         } else {
-          _rightShowList.push(item)
-          _rightHeight += h
+          _rightShowList.push({...item, width: w, height:h})
+          _rightHeight += res.height
         }
       }
       catch {}
@@ -88,7 +94,7 @@ function HomeTabs (props) {
       Taro.getImageInfo({
         src: url,
         success: res => {
-          resolve(res.height)
+          resolve(res)
         },
         fail: err => {
           reject(err)
@@ -142,11 +148,11 @@ function HomeTabs (props) {
       >
         {typeList && typeList.length && typeList.map((item,index) => <Tabs.TabPane title={item.name} className='home-tabs-title'>
           { loading && rightShowList.length == 0 && leftShowList.length == 0 && <Loading className='home-tabs-loading' direction="vertical" icon={<Image className='home-tabs-loading-img' src={`${staticCdn}/public/result/loading.png`} />}>加载中</Loading>}
-          {typeContent.length == 0 && <Empty />}
+          {!loading && typeContent.length == 0 && <Empty />}
           {typeContent.length > 0 && <View className='home-tabs-list'>
             <View className='home-tabs-list-left'>
               { leftShowList && leftShowList.map((item,index) => <View className='home-tabs-list-item' key={`left_${index}`}>
-                <Image src={item.imgurl} className='home-tabs-list-item-img' mode='widthFix' lazyLoad/>
+                <Image src={item.imgurl} className='home-tabs-list-item-img' lazyLoad style={{height: item.height}}/>
                 {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
                 <View className='home-tabs-list-item-bottom'>
                   <Image src={item.avatar} className='home-tabs-list-item-avatar' />
@@ -156,7 +162,7 @@ function HomeTabs (props) {
             </View>
             <View className='home-tabs-list-right'>
               { rightShowList && rightShowList.map((item,index) => <View className='home-tabs-list-item' key={`right_${index}`}>
-                <Image src={item.imgurl} className='home-tabs-list-item-img' mode='widthFix' lazyLoad/>
+                <Image src={item.imgurl} className='home-tabs-list-item-img' lazyLoad style={{height: item.height}}/>
                 {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
                 <View className='home-tabs-list-item-bottom'>
                   <Image src={item.avatar} className='home-tabs-list-item-avatar' />

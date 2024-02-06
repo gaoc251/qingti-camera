@@ -58,7 +58,7 @@ export default function AdProcessPopup(props) {
   }
 
   return (
-    <Popup visible={isVisible || false} onClose={()=>{onClose?.()}}  round className='ad-process-popup'>
+    <Popup visible={isVisible || false} onClose={()=>{onClose?.()}}  round className='ad-process-popup' closeOnOverlayClick={false}>
       <Video
         source={source}
         options={options}

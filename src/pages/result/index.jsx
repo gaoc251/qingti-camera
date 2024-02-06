@@ -12,6 +12,7 @@ import AdProcessPopup from '../../components/Result/AdProcessPopup';
 import NoneCountPopup from '../../components/Common/NoneCountPopup';
 import { getCurrentInstance } from '@tarojs/runtime';
 
+let timer = null
 
 function Result() {
   const [saveDisable, setSaveDisable] = useState(false); // 默认可点击
@@ -30,12 +31,13 @@ function Result() {
   const [residueTimes, setResidueTimes] = useState(0) // 剩余次数
   const [isReuse, setIsReuse] = useState(false); // 是否是重新绘制
   const [isFailed, setIsFailed] = useState(false); // 是否生成失败
+  // const [taskId, setTaskId] = useState(getCurrentInstance().router.params.id )// 任务ID
+  let taskId = getCurrentInstance().router.params.id
   
-  let taskId = getCurrentInstance().router.params.id // 任务ID
-  let openLunxun = true; // 默认开启轮训操作
-  let timer = null 
 
-  const fetchTaskStatus = useCallback( async(userId)=>{
+  let openLunxun = true; // 默认开启轮训操作 
+
+  const fetchTaskStatus = useCallback( async(userId, taskId)=>{
     console.log("lunxun")
     await Request('get', getTaskStatus, {openid: userId, taskid: taskId}).then(res => {
       let _status = res.data.status
@@ -50,7 +52,7 @@ function Result() {
         })
       } else if (_status == 'success') {
         // 生成成功
-        getImgData(userId)
+        getImgData(userId, taskId)
         clearInterval(timer)
       }
     })
@@ -64,7 +66,7 @@ function Result() {
   useEffect(() => {
     if (openLunxun && openId) {
       timer = setInterval(()=>{
-        fetchTaskStatus(openId)
+        fetchTaskStatus(openId, taskId)
       }, 5000)
     }
   }, [openId])
@@ -148,7 +150,7 @@ function Result() {
   }
 
   useEffect(()=>{
-    openId && getImgData(openId)
+    openId && getImgData(openId, taskId)
     openId && fetchResidueTimes()
   }, [openId])
 
@@ -159,7 +161,7 @@ function Result() {
     })
   }
 
-  const getImgData = (userId) => {
+  const getImgData = (userId, taskId) => {
     Request('get', getImg, { openid: userId, taskid: taskId }).then(res => {
       const { infoCode, data } = res
 
@@ -216,9 +218,14 @@ function Result() {
       openLunxun = true
       setIsReuse(true)
       setIsVisibleAdProcess(true)
+      setSaveDisable(true)
+
       // 重新绘制调用图生图接口
       Request('post', img2img, {openid: openId, reuse: true, imgType: imgInfo.type}).then(res => {
-        taskId = res.data.taskid
+        taskId = res.data.taskid        
+        timer = setInterval(()=>{
+          fetchTaskStatus(openId, res.data.taskid)
+        }, 5000)
       })
     }
   }

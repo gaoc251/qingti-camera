@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import './index.scss'
@@ -51,10 +51,6 @@ function Index() {
     Request('get', getNewUser, {openid:openId}).then(res=>{
       let isNewUser = res.data.newUser
       setIsNewUser(isNewUser)
-      
-      if (isNewUser && Taro.getStorageSync('newUser-private') == '') {
-        setIsPrivateVisible(true)
-      }
     })
   }
 
@@ -104,9 +100,9 @@ function Index() {
   }
 
   // tab 切换，记录index
-  const changeThemeIndex = (index) => {
+  const changeThemeIndex = useCallback((index) => {
     setCurrentIndex(index)
-  }
+  }, [])
 
   // 关闭剩余次数
   const handleNoneCountBtn = (flag) => {
