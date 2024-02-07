@@ -14,8 +14,9 @@ export default function NoneCountPopup(props) {
   //   })
   // }
   const openVideo = () => {
-    Taro.showToast({
-      title: '查看视频', icon: 'none'
+    let url = 'https://www.carton622.cn/videos/video.mp4'
+    Taro.navigateTo({
+      url: `/pages/webview/index?src=${encodeURIComponent(url)}`
     })
   }
   

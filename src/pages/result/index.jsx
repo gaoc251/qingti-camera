@@ -19,7 +19,7 @@ function Result() {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisiblAdProcess, setIsVisibleAdProcess] = useState(true);
   const [source, setSource] = useState({
-    src: 'https://storage.360buyimg.com/nutui/video/video_NutUI.mp4',
+    src: 'https://www.carton622.cn/videos/video.mp4',
     type: 'video/mp4',
   })
 
