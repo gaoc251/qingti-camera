@@ -14,7 +14,7 @@ export default function NoneCountPopup(props) {
   //   })
   // }
   const openVideo = () => {
-    let url = 'https://www.carton622.cn/videos/video.mp4'
+    let url = 'https://carton-public.oss-cn-beijing.aliyuncs.com/portal/video.mp4'
     Taro.navigateTo({
       url: `/pages/webview/index?src=${encodeURIComponent(url)}`
     })

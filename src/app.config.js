@@ -3,7 +3,8 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/result/index',
     'pages/saveSuccess/index',
-    'pages/webview/index'
+    'pages/webview/index',
+    'pages/private/index'
   ],
   window: {
     backgroundTextStyle: 'light',

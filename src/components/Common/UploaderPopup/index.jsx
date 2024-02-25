@@ -5,6 +5,7 @@ import { Refresh, Retweet } from '@nutui/icons-react-taro'
 import Taro from '@tarojs/taro';
 import { img2img } from '../../../utils/api';
 import { Request } from '../../../utils/request';
+import compressImage from './compressImage';
 import './index.scss'
 
 
@@ -21,14 +22,44 @@ export default function UploaderPopup(props) {
   const [imageUrl, setImageUrl] = useState('')
   
   const cutImage = async (data) => {
-    let _base64 = await fileToBase64(data)
-    setImageUrl(_base64)
-    let params = {
-      imgType: currentIndex,
-      openid: openId,
-      imgStr: _base64,
-      reuse: false
-    }
+    let file = ''
+    await compressImage(data,file,60,100,5, (res)=>{
+      file = res
+      const _base64 = Taro.getFileSystemManager().readFileSync(file, "base64");
+      setImageUrl(_base64)
+      let params = {
+        imgType: currentIndex,
+        openid: openId,
+        imgStr: _base64,
+        reuse: false
+      }
+      uploadImg(params)
+    })
+
+    // ToDo暂时隐藏
+    // let _base64 = await fileToBase64(data)
+    // setImageUrl(_base64)
+    // let params = {
+    //   imgType: currentIndex,
+    //   openid: openId,
+    //   imgStr: _base64,
+    //   reuse: false
+    // }
+    // Request('post', img2img, params).then(res => {
+    //   if (res.infoCode == 10000) {
+    //     Taro.navigateTo({
+    //       url: `/pages/result/index?id=${res.data.taskid}`
+    //     })
+    //   } else {
+    //     Taro.showToast({
+    //       title: res.info,
+    //       icon: 'none'
+    //     })
+    //   }
+    // })
+  }
+
+  const uploadImg = (params) => {
     Request('post', img2img, params).then(res => {
       if (res.infoCode == 10000) {
         Taro.navigateTo({

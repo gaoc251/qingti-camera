@@ -13,6 +13,11 @@ function App(props) {
     console.log('onLaunch')
     let openId = Taro.getStorageSync('openId')
     !openId && getOpenIdData ()
+
+  //   wx.cloud.init({
+  //     // env: "其他云开发环境，也可以不填"    // 此处init的环境ID和微信云托管没有作用关系，没用就留空
+  //   });
+
   })
 
   const getOpenIdData = () => {

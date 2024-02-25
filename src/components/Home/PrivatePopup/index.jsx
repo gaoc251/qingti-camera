@@ -21,10 +21,13 @@ export default function PrivatePopup(props) {
   }
 
   const jumpAction = () => {
-    let url = 'http://www.carton622.cn/privacy.html'
     Taro.navigateTo({
-      url: `/pages/webview/index?src=${encodeURIComponent(url)}`
+      url: `/pages/private/index`
     })
+    // let url = 'https://carton-public.oss-cn-beijing.aliyuncs.com/portal/privacy.html'
+    // Taro.navigateTo({
+    //   url: `/pages/webview/index?src=${encodeURIComponent(url)}`
+    // })
   }
 
   return (

@@ -1,0 +1,22 @@
+.private {
+    padding: 0 20px;
+    &-title{ 
+        padding: 15px 0;
+        font-size: 20px;
+        font-weight: 600;
+        &-sub {
+            font-size: 16px;
+            padding: 10px 0;
+            font-weight: 600;
+        }
+    }
+    &-tip {
+        padding: 10px 0;
+        &-item {
+            padding: 10px 0 ;
+            &:last-child {
+                padding-bottom: 60px;
+            }
+        }
+    }
+}
