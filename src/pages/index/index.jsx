@@ -7,7 +7,7 @@ import { Request } from '../../utils/request'
 import { getNewUser, getImg, getUselimit } from '../../utils/api'
 
 import NavBar from '../../components/Common/NavBar'
-import Tab from '../../components/Home/Tab'
+import TabNew from '../../components/Home/TabNew'
 import UploaderPopup from '../../components/Common/UploaderPopup'
 import LatestTipPopup from '../../components/Home/LatestTipPopup'
 import NoneCountPopup from '../../components/Common/NoneCountPopup'
@@ -139,7 +139,7 @@ function Index() {
         <Image className='index-top-none' src={`${staticCdn}/public/home/bg.png`} style={{top: navBarHeight + 'px'}}/>
       </View>
 
-      <Tab onChange={changeThemeIndex} navBarHeight={navBarHeight} />
+      <TabNew onChange={changeThemeIndex} navBarHeight={navBarHeight} />
 
       <View className='index-experience'>
         <View className='index-experience-btn' onClick={()=>{handleExperienceBtn(true)}}>
