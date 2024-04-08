@@ -19,6 +19,7 @@ function SaveSuccess() {
   const [isResidueTimesVisible, setIsResidueTimesVisible] = useState(false) // 剩余次数弹框
 
   let imgType = getCurrentInstance().router.params.imgType // 风格ID
+  let res_imgUrl = decodeURIComponent(getCurrentInstance().router.params.imgUrl) // 保存图片URL
 
   useEffect(() => {
     let _openId = Taro.getStorageSync('openId')
@@ -44,7 +45,7 @@ function SaveSuccess() {
 
   const {imgUrl} = res
 
-  // TODO: 推过链接是什么
+  
   useShareAppMessage(()=>{
     return {
       title: '我用AI智能生成了一张宝宝的头像，你也快来玩吧！',
@@ -89,7 +90,7 @@ function SaveSuccess() {
     <View className="save-success">
       <View className='save-success-top'>
         <View className='save-success-img'>
-          <Image src={imgUrl} className='save-success-img-res'/>
+          <Image src={res_imgUrl} className='save-success-img-res'/>
           <Image src={`${staticCdn}/public/saveSuccess/album.png`} className='save-success-img-album' />
         </View>
         <View className='save-success-tip'>已保存到手机相册</View>

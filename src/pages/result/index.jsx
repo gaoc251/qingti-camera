@@ -94,7 +94,7 @@ function Result() {
           if (res.statusCode === 200) {
             console.log(res)
             const tempFilePath = res.tempFilePath;  // 获取下载的临时文件路径
-            saveImageToPhotosAlbum(tempFilePath)
+            saveImageToPhotosAlbum(tempFilePath, currentIndex)
           } else {
             console.log('下载图片失败');
             // 图片下载失败的处理逻辑
@@ -109,7 +109,7 @@ function Result() {
     }
   }
 
-  const saveImageToPhotosAlbum = (tempFilePath) => {
+  const saveImageToPhotosAlbum = (tempFilePath, currentIndex) => {
     // 保存图片到相册
     Taro.saveImageToPhotosAlbum({
       filePath: tempFilePath,
@@ -117,7 +117,7 @@ function Result() {
         console.log('保存图片成功');
         // 图片保存成功的处理逻辑
         Taro.navigateTo({
-          url: '/pages/saveSuccess/index?imgType='+imgInfo.type
+          url: '/pages/saveSuccess/index?imgType='+imgInfo.type+'&imgUrl='+encodeURIComponent(imgInfo.pics[currentIndex])
         })
       },
       fail: (error) => {
