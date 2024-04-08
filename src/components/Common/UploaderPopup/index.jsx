@@ -23,7 +23,7 @@ export default function UploaderPopup(props) {
   
   const cutImage = async (data) => {
     let file = ''
-    await compressImage(data,file,60,100,5, (res)=>{
+    await compressImage(data,file,200,100,5, (res)=>{
       file = res
       const _base64 = Taro.getFileSystemManager().readFileSync(file, "base64");
       setImageUrl(_base64)
@@ -35,28 +35,6 @@ export default function UploaderPopup(props) {
       }
       uploadImg(params)
     })
-
-    // ToDo暂时隐藏
-    // let _base64 = await fileToBase64(data)
-    // setImageUrl(_base64)
-    // let params = {
-    //   imgType: currentIndex,
-    //   openid: openId,
-    //   imgStr: _base64,
-    //   reuse: false
-    // }
-    // Request('post', img2img, params).then(res => {
-    //   if (res.infoCode == 10000) {
-    //     Taro.navigateTo({
-    //       url: `/pages/result/index?id=${res.data.taskid}`
-    //     })
-    //   } else {
-    //     Taro.showToast({
-    //       title: res.info,
-    //       icon: 'none'
-    //     })
-    //   }
-    // })
   }
 
   const uploadImg = (params) => {
@@ -131,7 +109,7 @@ export default function UploaderPopup(props) {
         </AvatarCropper>
         <AvatarCropper
           className='uploader-popup-btns-item camera'
-          toolbarPosition="top"
+          // toolbarPosition="top"
           editText=""
           sourceType={['camera']} 
           onConfirm={cutImage}

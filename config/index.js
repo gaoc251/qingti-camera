@@ -16,13 +16,13 @@ const config = {
   defineConstants: {
     staticCdn: '"https://carton-public.oss-cn-beijing.aliyuncs.com"'
   },
-  copy: {
-    patterns: [
-      { from: 'src/public/', to: `dist/public` }
-    ],
-    options: {
-    }
-  },
+  // copy: {
+  //   patterns: [
+  //     { from: 'src/public/', to: `dist/public` }
+  //   ],
+  //   options: {
+  //   }
+  // },
   framework: 'react',
   compiler: {
     type: 'webpack5',

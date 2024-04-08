@@ -21,7 +21,7 @@ export default function compressImage  (
     filePath: path,
     success: async (res) => {
       console.log(`图片压缩size：${res.size / 1024}kb`, `quality：${quality}`);
-      if (res.size > 1024 * limitSize && (quality-step >= 0)) {
+      if (res.size > 1024 * limitSize && (quality-step > 0)) {
         Taro.compressImage({
           src: oldFilePath,
           quality: quality - step,

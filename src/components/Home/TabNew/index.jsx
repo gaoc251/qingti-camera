@@ -11,7 +11,6 @@ import './index.scss'
 const system = Taro.getSystemInfoSync()
 console.log("system", system)
 function HomeTabs (props) {
-  console.log("sssssss渲染")
   const [tabvalue, setTabvalue] = useState('0');
   
   const [rightShowListData, setRightShowListData] = useState([]);
@@ -83,7 +82,7 @@ function HomeTabs (props) {
         let _scr = system.screenWidth
         let w = _scr*(375-51)/375/2
         let h = res.height*w/res.width
-        console.log("wwwwww",w, h)
+        // console.log("wwwwww",w, h)
         if (type == 'left') {
           _leftShowList.push({...item, width: w, height:h})
         } else {
@@ -161,7 +160,7 @@ function HomeTabs (props) {
           {(leftShowList.length > 0 || rightShowList.length > 0) && <View className='home-tabs-list'>
             <View className='home-tabs-list-left'>
               { leftShowList && leftShowList.map((item,index) => <View className='home-tabs-list-item' key={`left_${index}`}>
-                <Image src={item.imgurl} className='home-tabs-list-item-img' lazyLoad style={{height: item.height}}/>
+                <Image src={item.imgurl} className='home-tabs-list-item-img' style={{height: item.height, width: item.width}}/>
                 {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
                 <View className='home-tabs-list-item-bottom'>
                   <Image src={item.avatar} className='home-tabs-list-item-avatar' />
@@ -171,7 +170,7 @@ function HomeTabs (props) {
             </View>
             <View className='home-tabs-list-right'>
               { rightShowList && rightShowList.map((item,index) => <View className='home-tabs-list-item' key={`right_${index}`}>
-                <Image src={item.imgurl} className='home-tabs-list-item-img' lazyLoad style={{height: item.height}}/>
+                <Image src={item.imgurl} className='home-tabs-list-item-img' style={{height: item.height, width: item.width}}/>
                 {item.text && <View className='home-tabs-list-item-text'>{item.text}</View>}
                 <View className='home-tabs-list-item-bottom'>
                   <Image src={item.avatar} className='home-tabs-list-item-avatar' />
