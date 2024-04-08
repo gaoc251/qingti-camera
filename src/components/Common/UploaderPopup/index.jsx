@@ -22,11 +22,9 @@ export default function UploaderPopup(props) {
   const [imageUrl, setImageUrl] = useState('')
   
   const cutImage = async (data) => {
-    let file = ''
-    await compressImage(data,file,200,100,5, (res)=>{
-      file = res
-      const _base64 = Taro.getFileSystemManager().readFileSync(file, "base64");
-      setImageUrl(_base64)
+    console.log("data", data)
+    let _base64 = await fileToBase64(data)
+    setImageUrl(_base64)
       let params = {
         imgType: currentIndex,
         openid: openId,
@@ -34,7 +32,20 @@ export default function UploaderPopup(props) {
         reuse: false
       }
       uploadImg(params)
-    })
+    // let file = ''
+    
+    // await compressImage(data,file,200,100,5, (res)=>{
+    //   file = res
+    //   const _base64 = Taro.getFileSystemManager().readFileSync(file, "base64");
+    //   setImageUrl(_base64)
+    //   let params = {
+    //     imgType: currentIndex,
+    //     openid: openId,
+    //     imgStr: _base64,
+    //     reuse: false
+    //   }
+    //   uploadImg(params)
+    // })
   }
 
   const uploadImg = (params) => {
